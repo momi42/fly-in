@@ -1,5 +1,6 @@
 from core.map_data import MapData
 from core.zone import Zone
+from core.connection import Connection
 
 
 class Parser:
@@ -17,12 +18,17 @@ class Parser:
                 continue
             if line.startswith('nb_drones'):
                 map_data.drone_count = int(line.split(":")[1])
-            if line.startswith('start_hub'):
+            elif line.startswith('start_hub'):
                 map_data.start_hub= line.split(":")[1].split()[0]
-            if line.startswith('end_hub'):
+            elif line.startswith('end_hub'):
                 map_data.end_hub = line.split(":")[1].split()[0]
-            if line.startswith('hub'):
-                name , x, y, meta = line.split(":")[1].split()
+            elif line.startswith('hub'):
+                name , x, y = line.split(":")[1].split()[:3]
                 zone = Zone(name, int(x), int(y))
                 map_data.zones.append(zone)
+            elif line.startswith('connection'):
+                connection_data = line.split(":")[1].strip
+                start , end = connection_data.split("-")
+                connection = Connection(start, end)
+                map_data.connections.append(connection)
         return(map_data)

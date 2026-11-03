@@ -5,7 +5,7 @@ from parser.parser import Parser
 
 
 parser = Parser()
-data = parser.parse("/sgoinfre/mohfalla/fly-in da casa/fly-in/maps/easy/01_linear_path.txt")
+data = parser.parse("maps/easy/01_linear_path.txt")
 print(data)
 
 
