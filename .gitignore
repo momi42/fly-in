@@ -1,2 +1,7 @@
-.vscode-server/
 .vscode/
+.vscode-server/
+node_modules/
+dist/
+build/
+.cache/
+*.log
