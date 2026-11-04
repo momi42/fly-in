@@ -1,6 +1,7 @@
 from core.map_data import MapData
 from core.zone import Zone
 from core.connection import Connection
+from parser.exceptions import ParserError
 
 
 class Parser:
@@ -18,17 +19,31 @@ class Parser:
                 continue
             if line.startswith('nb_drones'):
                 map_data.drone_count = int(line.split(":")[1])
+                if map_data.drone_count <= 0:
+                    raise ParserError("Number of drones must be positiv")
             elif line.startswith('start_hub'):
+                if map_data.start_hub:
+                    raise ParserError("Multiple start hubs found")
                 map_data.start_hub= line.split(":")[1].split()[0]
             elif line.startswith('end_hub'):
+                if map_data.end_hub:
+                    raise ParserError("Multiple end hubs found")
                 map_data.end_hub = line.split(":")[1].split()[0]
             elif line.startswith('hub'):
                 name , x, y = line.split(":")[1].split()[:3]
                 zone = Zone(name, int(x), int(y))
+                for zone in map_data.zones:
+                    if zone.name == name:
+                        raise ParserError(f"Duplicate zone: {name}")
                 map_data.zones.append(zone)
             elif line.startswith('connection'):
-                connection_data = line.split(":")[1].strip
-                start , end = connection_data.split("-")
+                connection_data = line.split(":")[1].strip()
+                start, end = connection_data.split("-")
                 connection = Connection(start, end)
                 map_data.connections.append(connection)
+
+        if not map_data.start_hub:
+            raise ParserError("Missing start_hub")
+        if not map_data.end_hub:
+            raise ParserError("Missing end_hub")
         return(map_data)
