@@ -2,16 +2,18 @@ from core.zone import Zone
 from core.connection import Connection
 from core.graph import Graph
 from parser.parser import Parser
+from parser.exceptions import ParserError
 
-
+# =====Test per parser======
 parser = Parser()
-data = parser.parse("maps/easy/01_linear_path.txt")
-print(data)
+try:
+    data = parser.parse("maps/easy/01_linear_path.txt")
+    print(data)
+except ParserError as e:
+    print(f"\033[31m {e} \033[0m")
 
 
-print("*"*10)
-# -----------
-
+# =====Test per core======
 # graph = Graph()
 
 # zone_a = Zone("A", 0, 0)
