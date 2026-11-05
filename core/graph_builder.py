@@ -15,8 +15,6 @@ class GraphBuilder:
         for zone in map_data.zones:
             graph.add_zone(zone)
 
-        print(graph.adjacency)
-        
         for connection in map_data.connections:
             graph.add_connection(
                 connection.start,

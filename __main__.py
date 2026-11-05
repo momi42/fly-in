@@ -4,15 +4,27 @@ from core.graph import Graph
 from parser.parser import Parser
 from parser.exceptions import ParserError
 from core.graph_builder import GraphBuilder
+from pathfinding.bfs import BFS
 
-# =====Test per parser======
+
+# =====Test per BFS======
 parser = Parser()
 try:
     data = parser.parse("maps/easy/01_linear_path.txt")
     graph = GraphBuilder().build(data)
-    print(graph.adjacency)
+    path = BFS().find_path(graph, "start", "goal")
+    print(path)
 except ParserError as e:
     print(f"\033[31m {e} \033[0m")
+
+# # =====Test per parser======
+# parser = Parser()
+# try:
+#     data = parser.parse("maps/easy/01_linear_path.txt")
+#     graph = GraphBuilder().build(data)
+#     print(graph.adjacency)
+# except ParserError as e:
+#     print(f"\033[31m {e} \033[0m")
 
 
 # =====Test per core======
