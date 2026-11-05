@@ -19,3 +19,6 @@ class Graph:
 
     def neighbors(self, zone_name):
         return self.adjacency[zone_name]
+
+    def get_zone(self, name):
+        return self.zones[name]
