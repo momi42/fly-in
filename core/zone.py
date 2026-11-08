@@ -7,6 +7,7 @@ class Zone:
     x: int
     y: int
     zone_type: str = "normal"
+    max_drones: int = 1
 
     def cost(self):
         if self.zone_type == "restricted":

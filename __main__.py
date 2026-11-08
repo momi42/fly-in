@@ -15,11 +15,12 @@ parser = Parser()
 try:
     data = parser.parse("maps/easy/01_linear_path.txt")
     graph = GraphBuilder().build(data)
+    graph.zones["a"].max_drones = 1
     path = Dijkstra().find_path(graph, data.start_hub, data.end_hub)
     drones =[]
     for i in range(data.drone_count):
         drones.append(Drone(drone_id=i+1, current_zone=data.start_hub))
-    movements = Simulator().simulate(drones, path)
+    movements = Simulator().simulate(drones, path, graph)
 except ParserError as e:
     print(f"\033[31m {e} \033[0m")
 
