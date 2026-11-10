@@ -5,7 +5,6 @@ class OccupancyManager:
     def reset(self):
         self.occupancy = {}
 
-
     def register(
         self,
         zone_name,
@@ -20,7 +19,6 @@ class OccupancyManager:
     ):
         if zone_name in self.occupancy:
             self.occupancy[zone_name] -= 1
-
 
     def can_enter(
             self,

@@ -18,8 +18,11 @@ class Simulator:
             for drone in drones:
                 if drone.delivered:
                     continue
-                next_zone_name = path[drone.path_index + 1] if drone.path_index + 1 < len(path) else None
-                next_zone = graph.zones.get(next_zone_name) if next_zone_name else None
+                next_zone_name = path[
+                    drone.path_index + 1
+                    ] if drone.path_index + 1 < len(path) else None
+                next_zone = graph.zones.get(
+                    next_zone_name) if next_zone_name else None
                 if occupancy.can_enter(next_zone):
                     drone.path_index += 1
                     zone = path[drone.path_index]
@@ -33,11 +36,9 @@ class Simulator:
                 print(" ".join(turn_moves))
         # return turn_moves
 
-
         # movements = []
         # for zone in path[1:]:
         #     drone.current_zone = zone
         #     movements.append(f"D{drone.drone_id}-{zone}")
         # drone.delivered = True
         # return movements
-
