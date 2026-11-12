@@ -15,6 +15,8 @@ class Simulator:
                 occupancy.register(drone.current_zone)
 
     def _move_drone(self,drone,path,graph,occupancy,) -> str:
+        if next_zone is None:
+            return ""
         move_string = ""
         next_zone_name = path[drone.path_index + 1] if drone.path_index + 1 < len(path) else None
         next_zone = graph.zones.get(
@@ -23,7 +25,7 @@ class Simulator:
             drone.path_index += 1
             zone = path[drone.path_index]
             occupancy.register(zone)
-            move_string.append(f"D{drone.drone_id}-{zone}")
+            move_string = (f"D{drone.drone_id}-{zone}")
             occupancy.remove(drone.current_zone)
             drone.current_zone = zone
         if (drone.path_index == len(path) - 1):
