@@ -2,36 +2,33 @@ from simulation.occupancy_manager import OccupancyManager
 
 
 class Simulator:
-    def _all_delivered(
-            self,
-            drones,
-        ):
+    def _all_delivered(self,drones,) -> bool:
             return all(
                 drone.delivered
                 for drone in drones
             )
 
-    def _build_occupancy(
-        self,
-        drones,
-        occupancy,
-    ):
-
+    def _build_occupancy(self,drones,occupancy,) -> None:
         occupancy.reset()
         for drone in drones:
             if not drone.delivered:
-                occupancy.register(
-                    drone.current_zone
-                )
+                occupancy.register(drone.current_zone)
 
-    def _move_drone(
-        self,
-        drone,
-        path,
-        graph,
-        occupancy,
-    ):
-        pass
+    def _move_drone(self,drone,path,graph,occupancy,) -> str:
+        move_string = ""
+        next_zone_name = path[drone.path_index + 1] if drone.path_index + 1 < len(path) else None
+        next_zone = graph.zones.get(
+            next_zone_name) if next_zone_name else None
+        if occupancy.can_enter(next_zone):
+            drone.path_index += 1
+            zone = path[drone.path_index]
+            occupancy.register(zone)
+            move_string.append(f"D{drone.drone_id}-{zone}")
+            occupancy.remove(drone.current_zone)
+            drone.current_zone = zone
+        if (drone.path_index == len(path) - 1):
+            drone.delivered = True
+        return move_string
 
     def simulate(
             self,
@@ -45,12 +42,7 @@ class Simulator:
             self._build_occupancy(drones, occupancy)
             turn_moves = []
             for drone in drones:
-                move = self._move_drone(
-                    drone,
-                    path,
-                    graph,
-                    occupancy,
-                )
+                move = self._move_drone(drone,path,graph,occupancy,)
                 if move:
                     turn_moves.append(move)
             if  turn_moves:
